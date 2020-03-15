@@ -1,10 +1,12 @@
-// @TODO: Step 1:  Read in json data, and create a list of test subject ids for the selection table
+// Step 1:  Read in json data, and create a list of test subject ids for the selection table
 var select_ids = [];
 d3.json("samples.json").then((data) => {
     // Get a list of subject ids
     select_ids = data.names;
     // console.log(select_ids);
     populateSelectIds();
+}).catch(function(error) {
+    console.log(error);
 });
 
 function populateSelectIds() {
@@ -33,7 +35,7 @@ function optionChanged() {
 
     var url = "samples.json"
 
-// Step 1:  Get demographic data for subject: id, ethnicity, gender, age, location, bellybutton type, and washing frequency
+// Step 2:  Get demographic data for subject: id, ethnicity, gender, age, location, bellybutton type, and washing frequency
    d3.json(url).then((data) => {
         selected_meta = data.metadata;
         selected_samples = data.samples;
@@ -63,7 +65,7 @@ function optionChanged() {
         }); 
 
     // ==============================================================================================    
-    // @TODO: Step 2:  Create a horizontal bar chart for frequency of various OTUs
+    // Step 3:  Create a horizontal bar chart for frequency of various OTUs
         var otu_ids = filtered_samples[0].otu_ids;
         var sample_values = filtered_samples[0].sample_values;
         var otu_labels = filtered_samples[0].otu_labels;
@@ -76,12 +78,13 @@ function optionChanged() {
             otu_id_names.push(bar_name);
         })
 
+        // Sample values are ordered highest quantity to lowest, so get the 1st 10 values to plot
         sample_values = sample_values.slice(0,max_slice);
         otu_labels = otu_labels.slice(0,max_slice);
 
-        console.log(otu_ids);
-        console.log(sample_values);
-        console.log(otu_labels);
+        // console.log(otu_ids);
+        // console.log(sample_values);
+        // console.log(otu_labels);
 
         var hbar_div = document.getElementById("#bar");
         var data = [{
@@ -91,10 +94,15 @@ function optionChanged() {
             text: otu_labels,
             orientation: 'h'
           }];
-          
-          Plotly.newPlot('bar', data);
+
+        var layout = {
+            title: `Quantity of OTUs for Subject ID# ${selectID}`,
+            yaxis:{autorange:'reversed'}
+        };  
+
+        Plotly.newPlot('bar', data, layout);
     // ==============================================================================================    
-// Step 4:  Create a bubble chart showing the amount (y-axis) of a specific OTU # (x-axis)
+    // Step 4:  Create a bubble chart showing the amount (y-axis) of a specific OTU # (x-axis)
         var bubble_div = document.getElementById("#bubble");
 
         var trace1 = {
@@ -103,7 +111,8 @@ function optionChanged() {
             text: otu_labels,
             mode: 'markers',
             marker: {
-              size: sample_values
+              size: sample_values,
+              color: ['lightblue', 'blue', 'green', 'lightgreen','red', 'orange', 'purple', 'brown', 'yellow', 'pink']
             }
           };
           
@@ -118,42 +127,39 @@ function optionChanged() {
           
           Plotly.newPlot('bubble', data, layout);
 
+    // ==============================================================================================              
+    // Step 5:  Create a gauge with arrow pointing to belly button washing frequency
+
           var gauge_div = document.getElementById("#gauge");
           var data = [
             {
               domain: { x: [0, 1], y: [0, 1] },
               value: filtered_meta[0].wfreq,
-              title: { text: "Belly Button Washing Frequency (Scrubs per week)" },
+              title: `<b>Belly Button Washing Frequency</b> <br> Scrubs per Week`,
               type: "indicator",
               mode: "gauge+number",
               gauge: {
                 axis: { range: [null, 9] },
                 steps: [
-                  { range: [0, 1], color: "lightgray" },
-                  { range: [1, 2], color: "gray" },
-                  { range: [2, 3], color: "lightgray" },
-                  { range: [3, 4], color: "gray" },
-                  { range: [4, 5], color: "lightgray" },
-                  { range: [5, 6], color: "gray" },
-                  { range: [6, 7], color: "lightgray" },
-                  { range: [7, 8], color: "gray" },
-                  { range: [8, 9], color: "lightgray" },
+                  { range: [0, 1], color: "#a83232" },
+                  { range: [1, 2], color: "#a85732" },
+                  { range: [2, 3], color: "#a87132" },
+                  { range: [3, 4], color: "#a87932" },
+                  { range: [4, 5], color: "#a89432" },
+                  { range: [5, 6], color: "#9aa832" },
+                  { range: [6, 7], color: "#7da832" },
+                  { range: [7, 8], color: "#57a832" },
+                  { range: [8, 9], color: "#32a848" },
                 ]
-              }
+              },  
+              "labels": ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
+              "textinfo": 'text',
+              "textposition":'inside',
             }
           ];
           
         var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
         Plotly.newPlot('gauge', data, layout);
 
-          
-
     });
-
 };    
-
-// @TODO: Step 5:  Create a gauge with arrow pointing to belly button washing frequency
-
-
-// Add event listener for submit button
-//d3.select("#selDataset").on("change", "optionChanged");
