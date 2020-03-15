@@ -1,6 +1,6 @@
 // @TODO: Step 1:  Read in json data, and create a list of test subject ids for the selection table
 var select_ids = [];
-d3.json("../../samples.json").then((data) => {
+d3.json("samples.json").then((data) => {
     // Get a list of subject ids
     select_ids = data.names;
     // console.log(select_ids);
@@ -31,7 +31,7 @@ function optionChanged() {
     return person.id == selectID;
   };
 
-    var url = "../../samples.json"
+    var url = "samples.json"
 
 // Step 1:  Get demographic data for subject: id, ethnicity, gender, age, location, bellybutton type, and washing frequency
    d3.json(url).then((data) => {
@@ -110,7 +110,7 @@ function optionChanged() {
           var data = [trace1];
           
           var layout = {
-            title: 'Bacteria Quantity per Bacteria ID',
+            title: 'Bacteria Quantity per OTU ID',
             showlegend: false,
             height: 600,
             width: 600
