@@ -92,12 +92,14 @@ function optionChanged() {
             x: sample_values,
             y: otu_id_names,
             text: otu_labels,
-            orientation: 'h'
+            orientation: 'h',
+            marker: { color: ['lightblue', 'blue', 'green', 'lightgreen','red', 'orange', 'purple', 'brown', 'yellow', 'pink'] }
           }];
 
         var layout = {
             title: `Quantity of OTUs for Subject ID# ${selectID}`,
-            yaxis:{autorange:'reversed'}
+            yaxis:{autorange:'reversed'},
+            xaxis: { title: 'Microbe Quantity'}
         };  
 
         Plotly.newPlot('bar', data, layout);
@@ -111,7 +113,8 @@ function optionChanged() {
             text: otu_labels,
             mode: 'markers',
             marker: {
-              size: sample_values,
+              size:  sample_values,
+              sizemin: 10,
               color: ['lightblue', 'blue', 'green', 'lightgreen','red', 'orange', 'purple', 'brown', 'yellow', 'pink']
             }
           };
@@ -119,10 +122,13 @@ function optionChanged() {
           var data = [trace1];
           
           var layout = {
-            title: 'Bacteria Quantity per OTU ID',
+            title: `<b>Microbe Quantity per OTU ID</b> <br> (OTU = Operational Taxonomic Unit)`,
             showlegend: false,
-            height: 600,
-            width: 600
+            height: 512,
+            width: 1024,
+            xaxis: { title: 'OTU ID',
+                    range: [0, `${Math.max(otu_ids)} + 10`]},
+            yaxis: {range: [0, `${Math.max(sample_values)} + 10`]},
           };
           
           Plotly.newPlot('bubble', data, layout);
@@ -141,17 +147,17 @@ function optionChanged() {
               gauge: {
                 axis: { range: [null, 9] },
                 steps: [
-                  { range: [0, 1], color: "#a83232" },
-                  { range: [1, 2], color: "#a85732" },
-                  { range: [2, 3], color: "#a87132" },
-                  { range: [3, 4], color: "#a87932" },
-                  { range: [4, 5], color: "#a89432" },
-                  { range: [5, 6], color: "#9aa832" },
-                  { range: [6, 7], color: "#7da832" },
-                  { range: [7, 8], color: "#57a832" },
-                  { range: [8, 9], color: "#32a848" },
+                  { range: [0, 1], color: 'lightblue' },
+                  { range: [1, 2], color: 'blue' },
+                  { range: [2, 3], color: 'green' },
+                  { range: [3, 4], color: 'lightgreen'},
+                  { range: [4, 5], color: 'red' },
+                  { range: [5, 6], color: 'orange' },
+                  { range: [6, 7], color: 'purple' },
+                  { range: [7, 8], color: 'yellow' },
+                  { range: [8, 9], color: 'pink' }
                 ]
-              },  
+            },  
               "labels": ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
               "textinfo": 'text',
               "textposition":'inside',
