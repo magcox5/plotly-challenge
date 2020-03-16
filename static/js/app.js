@@ -97,7 +97,7 @@ function optionChanged() {
           }];
 
         var layout = {
-            title: `Quantity of OTUs for Subject ID# ${selectID}`,
+            title: `<b>Quantity of OTUs for Subject ID# ${selectID}</b>`,
             yaxis:{autorange:'reversed'},
             xaxis: { title: 'Microbe Quantity'}
         };  
@@ -135,7 +135,6 @@ function optionChanged() {
 
     // ==============================================================================================              
     // Step 5:  Create a gauge with arrow pointing to belly button washing frequency
-
           var gauge_div = document.getElementById("#gauge");
           var data = [
             {
@@ -146,6 +145,7 @@ function optionChanged() {
               mode: "gauge+number",
               gauge: {
                 axis: { range: [null, 9] },
+                bar: { color: "darkblue" },
                 steps: [
                   { range: [0, 1], color: 'lightblue' },
                   { range: [1, 2], color: 'blue' },
@@ -157,14 +157,20 @@ function optionChanged() {
                   { range: [7, 8], color: 'yellow' },
                   { range: [8, 9], color: 'pink' }
                 ]
-            },  
-              "labels": ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
-              "textinfo": 'text',
-              "textposition":'inside',
+                }
             }
           ];
           
-        var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+        var layout = {           
+            width: 500, 
+            height: 300, 
+            margin: { t: -20, b: -20, l: 10, r: 10 },
+            labels: ['0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9'],
+            textinfo: 'text',
+            textposition:'inside',
+            font: { color: "darkblue", family: "Arial" }
+        };
+
         Plotly.newPlot('gauge', data, layout);
 
     });
