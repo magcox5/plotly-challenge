@@ -71,7 +71,7 @@ function optionChanged() {
         var otu_labels = filtered_samples[0].otu_labels;
     
         var max_slice = (otu_ids.length < 10 ? otu_ids.length : 10);
-        otu_ids = otu_ids.slice(0,max_slice);
+        otu_ids_bar = otu_ids.slice(0,max_slice);
         otu_id_names = [];
         otu_ids.forEach(function(x){
             var bar_name = "OTU " + String(x);
@@ -79,8 +79,8 @@ function optionChanged() {
         })
 
         // Sample values are ordered highest quantity to lowest, so get the 1st 10 values to plot
-        sample_values = sample_values.slice(0,max_slice);
-        otu_labels = otu_labels.slice(0,max_slice);
+        sample_values_bar = sample_values.slice(0,max_slice);
+        otu_labels_bar = otu_labels.slice(0,max_slice);
 
         // console.log(otu_ids);
         // console.log(sample_values);
@@ -89,9 +89,9 @@ function optionChanged() {
         var hbar_div = document.getElementById("#bar");
         var data = [{
             type: 'bar',
-            x: sample_values,
+            x: sample_values_bar,
             y: otu_id_names,
-            text: otu_labels,
+            text: otu_labels_bar,
             orientation: 'h',
             marker: { color: ['lightblue', 'blue', 'green', 'lightgreen','red', 'orange', 'purple', 'brown', 'yellow', 'pink'] }
           }];
